@@ -5,6 +5,7 @@
   "main": "server.js",
   "scripts": {
     "test": "newman run Moviestore-framework.postman_collection.json",
+    "test:report": "newman run Moviestore-framework.postman_collection.json -r htmlextra",
     "start": "node server.js"
   },
   "keywords": [],
@@ -15,5 +16,9 @@
     "cors": "^2.8.5",
     "express": "^4.19.2",
     "pg": "^8.11.5"
+  },
+  "devDependencies": {
+    "newman": "^6.1.2",
+    "newman-reporter-htmlextra": "^1.23.1"
   }
 }

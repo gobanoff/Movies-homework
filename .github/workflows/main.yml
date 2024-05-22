@@ -1,0 +1,63 @@
+name: Postman-test.yml
+on:
+  push:
+    branches:
+      - main
+      
+jobs:
+  postman-test-api:
+  
+    runs-on: ubuntu-latest
+    steps:
+    # Checks-out your repository under $GITHUB_WORKSPACE, so your job can access it
+    - uses: actions/checkout@v2
+      
+    # INstall Node on the runner
+    - name: Install Node
+      uses: actions/setup-node@v1
+      with: 
+        node-version: '18.x'
+
+    # Install project dependencies
+    - name: Install Dependencies
+      run: npm install
+
+    # Start the Node.js application in the background
+    - name: Start Node.js Application
+      run: |
+        nohup npm start &
+    
+    # Wait for the application to be fully up and running
+    - name: Wait for Application to Start
+      run: |
+        while ! curl -s http://localhost:3000/api/users > /dev/null; do
+          echo "Waiting for application to start..."
+          sleep 2
+        done
+    
+    # Install the newman command line utility and also install the html extra reporter
+    - name: Install newman
+      run: |
+       npm install -g newman
+       npm install -g newman-reporter-htmlextra
+
+    # Make directory to upload the test results
+    - name: Make Directory for results
+      run: mkdir -p testResults
+
+    # run the postman collection to console
+    - name: Run POSTMAN collection to console
+      run: |
+       newman run Moviestore-framework.postman_collection.json
+
+    # Run the POSTMAN collection to html report
+    - name: Run POSTMAN collection to html report
+      run: |
+       newman run Moviestore-framework.postman_collection.json -r htmlextra --reporter-htmlextra-export testResults/htmlreport.html
+
+    # Upload the contents of Test Results directory to workspace
+    - name: Output the run Details
+      uses: actions/upload-artifact@v2
+      with: 
+       name: RunReports
+       path: testResults
