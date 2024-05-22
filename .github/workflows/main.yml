@@ -30,7 +30,7 @@ jobs:
     # Wait for the application to be fully up and running
     - name: Wait for Application to Start
       run: |
-        while ! curl -s http://localhost:3000/api/users > /dev/null; do
+        while ! curl -s http://localhost:3000/movies > /dev/null; do
           echo "Waiting for application to start..."
           sleep 2
         done
