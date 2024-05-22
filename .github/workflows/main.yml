@@ -46,9 +46,9 @@ jobs:
       run: mkdir -p testResults
 
     # run the postman collection to console
-    - name: Run POSTMAN collection to console
-      run: |
-       newman run Moviestore-framework.postman_collection.json
+    #- name: Run POSTMAN collection to console
+     # run: |
+      
 
     # Run the POSTMAN collection to html report
     - name: Run POSTMAN collection to html report
