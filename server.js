@@ -1,7 +1,6 @@
 const express = require('express');
 const bodyParser = require('body-parser');
 const cors = require('cors');
-const { Pool } = require('pg');
 
 const app = express();
 const port = 3000;
@@ -9,14 +8,19 @@ const port = 3000;
 // Middleware
 app.use(bodyParser.json());
 app.use(cors());
-// PostgreSQL pool setup
-const pool = new Pool({
-    user: 'postgres',
-    host: 'localhost',
-    database: 'moviebase',
-    password: 'postgres',
-    port: 5432,
-});
+
+let movies = [{"id":1,"title":"Dune","production_date":"2024-05-08","producer":"Denis Villeneuve","rating":"8.5"},
+{"id":2,"title":"Fast X","production_date":"2024-04-29","producer":"Vin Diesel","rating":"7.1"},
+{"id":3,"title":"Oblivion","production_date":"2024-05-31","producer":"Joseph Kosinski","rating":"8.1"},
+{"id":4,"title":"Bloodshot","production_date":"2021-06-23","producer":"Neal Moritz","rating":"7.7"},
+{"id":5,"title":"Skyfall","production_date":"2024-06-01","producer":"Anthony Wade","rating":"7.8"},
+{"id":6,"title":"Kung Fu Panda 3","production_date":"2024-05-06","producer":"Alessandro Carloni","rating":"9.2"},
+{"id":7,"title":"No Time To Die","production_date":"2024-05-28","producer":"Barbara Broccoli","rating":"8.7"},
+{"id":8,"title":"Jason Bourne","production_date":"2024-06-05","producer":"Matt Damon","rating":"6.9"},
+{"id":9,"title":"Alien","production_date":"1978-06-23","producer":"Ridley Scott","rating":"9.3"},
+{"id":10,"title":"The Terminator","production_date":"1988-05-23","producer":"Gale Anne Hurd","rating":"9.1"}];
+let currentId = 11;
+
 function formatDate(date) {
     const d = new Date(date);
     let month = '' + (d.getMonth() + 1);
@@ -30,89 +34,75 @@ function formatDate(date) {
 
     return [year, month, day].join('-');
 }
+
 // CRUD Operations
 
 // Create a movie
-app.post('/movies', async (req, res) => {
+app.post('/movies', (req, res) => {
     const { title, production_date, producer, rating } = req.body;
-    try {
-        const result = await pool.query(
-            'INSERT INTO movies (title, production_date, producer, rating) VALUES ($1, $2, $3, $4) RETURNING *',
-            [title,production_date , producer, rating]
-        );
-        const movie = result.rows[0];
-        movie.production_date = formatDate(movie.production_date);
-        res.json(movie);
-        
-    } catch (err) {
-        res.status(500).send(err.message);
-    }
+    const newMovie = {
+        id: currentId++,
+        title,
+        production_date,
+        producer,
+        rating
+    };
+    movies.push(newMovie);
+    newMovie.production_date = formatDate(newMovie.production_date);
+    res.json(newMovie);
 });
 
 // Read all movies
-app.get('/movies', async (req, res) => {
-    try {
-        const result = await pool.query('SELECT * FROM movies');
-        const movies = result.rows.map(movie => ({
-            ...movie,
-            production_date: formatDate(movie.production_date)
-        }));
-        res.json(movies);
-        //res.json(result.rows);
-    } catch (err) {
-        res.status(500).send(err.message);
-    }
+app.get('/movies', (req, res) => {
+    const formattedMovies = movies.map(movie => ({
+        ...movie,
+        production_date: formatDate(movie.production_date)
+    }));
+    res.json(formattedMovies);
 });
 
 // Read a single movie by ID
-app.get('/movies/:id', async (req, res) => {
+app.get('/movies/:id', (req, res) => {
     const { id } = req.params;
-    try {
-        const result = await pool.query('SELECT * FROM movies WHERE id = $1', [id]);
-        const movie = result.rows[0];
-        if (movie) {
-            movie.production_date = formatDate(movie.production_date);
-            res.json(movie);
-        } else {
-            res.status(404).send('Movie not found');
-        }
-    } catch (err) {
-        res.status(500).send(err.message);
+    const movie = movies.find(m => m.id == id);
+    if (movie) {
+        movie.production_date = formatDate(movie.production_date);
+        res.json(movie);
+    } else {
+        res.status(404).send('Movie not found');
     }
 });
 
-
-  
-       // res.json(result.rows[0]);
-  
-
-
 // Update a movie
-app.put('/movies/:id', async (req, res) => {
+app.put('/movies/:id', (req, res) => {
     const { id } = req.params;
     const { title, production_date, producer, rating } = req.body;
-    try {
-        const result = await pool.query(
-            'UPDATE movies SET title = $1, production_date = $2, producer = $3, rating = $4 WHERE id = $5 RETURNING *',
-            [title, production_date, producer, rating, id]
-        );
-        const movie = result.rows[0];
-        movie.production_date = formatDate(movie.production_date);
-        res.json(movie);
-        //res.json(result.rows[0]);
-    } catch (err) {
-        res.status(500).send(err.message);
+    const movieIndex = movies.findIndex(m => m.id == id);
+    if (movieIndex !== -1) {
+        const updatedMovie = {
+            id: parseInt(id),
+            title,
+            production_date,
+            producer,
+            rating
+        };
+        movies[movieIndex] = updatedMovie;
+        updatedMovie.production_date = formatDate(updatedMovie.production_date);
+        res.json(updatedMovie);
+    } else {
+        res.status(404).send('Movie not found');
     }
 });
 
 // Delete a movie
-app.delete('/movies/:id', async (req, res) => {
+app.delete('/movies/:id', (req, res) => {
     const { id } = req.params;
-    try {
-        await pool.query('DELETE FROM movies WHERE id = $1', [id]);
+    const movieIndex = movies.findIndex(m => m.id == id);
+    if (movieIndex !== -1) {
+        movies.splice(movieIndex, 1);
         res.sendStatus(204);
-    } catch (err) {
-        res.status(500).send(err.message);
+    } else {
+        res.status(404).send('Movie not found');
     }
 });
 
