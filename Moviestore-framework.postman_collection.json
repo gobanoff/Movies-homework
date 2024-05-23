@@ -192,7 +192,7 @@
 							}
 						},
 						"url": {
-							"raw": "http://localhost:3000/movies/2",
+							"raw": "http://localhost:3000/movies/3",
 							"protocol": "http",
 							"host": [
 								"localhost"
@@ -200,7 +200,7 @@
 							"port": "3000",
 							"path": [
 								"movies",
-								"2"
+								"3"
 							]
 						}
 					},
@@ -254,7 +254,7 @@
 							}
 						},
 						"url": {
-							"raw": "http://localhost:3000/movies/2",
+							"raw": "http://localhost:3000/movies/3",
 							"protocol": "http",
 							"host": [
 								"localhost"
@@ -262,7 +262,7 @@
 							"port": "3000",
 							"path": [
 								"movies",
-								"2"
+								"3"
 							]
 						}
 					},
