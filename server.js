@@ -40,7 +40,8 @@ app.post('/movies', (req, res) => {
     };
     movies.push(newMovie);
     newMovie.production_date = formatDate(newMovie.production_date);
-    res.json(newMovie);
+    //res.json(newMovie);
+     res.status(201).json(newMovie);
 });
 
 // Read all movies
@@ -93,7 +94,7 @@ app.delete('/movies/:id', (req, res) => {
         movies.splice(movieIndex, 1);
         res.sendStatus(204);
     } else {
-        res.status(404).send('Movie not found');
+        res.status(204).send('Movie not found');
     }
 });
 

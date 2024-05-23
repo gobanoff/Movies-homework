@@ -17,8 +17,8 @@
 							"listen": "test",
 							"script": {
 								"exec": [
-									"pm.test(\"Status code is 200\", function () {\r",
-									"    pm.response.to.have.status(200);\r",
+									"pm.test(\"Status code is 201\", function () {\r",
+									"    pm.response.to.have.status(201);\r",
 									"});\r",
 									"\r",
 									"\r",
@@ -92,8 +92,10 @@
 									"pm.test(\"Response status code is 200\", function () {\r",
 									"  pm.expect(pm.response.code).to.equal(200);\r",
 									"});\r",
-									"pm.test(\"Response body is not empty\", function () {\r",
-									"    pm.expect(pm.response.json()).to.not.be.empty;\r",
+									"\r",
+									"pm.test(\"Response body is an array and not empty\", function () {\r",
+									"    const responseData = pm.response.json();\r",
+									"    pm.expect(responseData).to.be.an('array').and.to.have.lengthOf.at.least(1,\"array should not be empty\");\r",
 									"});\r",
 									"\r",
 									"pm.test(\"Content-Type is application/json\", function () {\r",
@@ -144,18 +146,17 @@
 								"exec": [
 									"",
 									"",
-									"//pm.test(\"Response status code is 204\", function () {",
-									"  //pm.response.to.have.status(204);",
-									"//});",
+									"pm.test(\"Response status code is 204\", function () {",
+									"  pm.response.to.have.status(204);",
+									"});",
 									"pm.test(\"Response time is less than 500ms\", function () {",
 									"  pm.expect(pm.response.responseTime).to.be.below(500);",
 									"});",
+									"pm.test(\"Response body is empty after deletion\", function () {",
+									"    pm.expect(pm.response.text()).to.be.empty;",
+									"});",
 									"",
 									"",
-									"//pm.test(\"Response body is null\", function () {",
-									"   // const responseData = xml2Json(pm.response.text()); ",
-									"   // pm.expect(responseData).to.be.null;",
-									"//});",
 									"",
 									"",
 									"",
@@ -278,8 +279,8 @@
 							"listen": "test",
 							"script": {
 								"exec": [
-									"pm.test(\"Status code is 200\", function () {\r",
-									"    pm.response.to.have.status(200);\r",
+									"pm.test(\"Status code is 201\", function () {\r",
+									"    pm.response.to.have.status(201);\r",
 									"});\r",
 									"\r",
 									"\r",
@@ -453,7 +454,7 @@
 						"header": [],
 						"body": {
 							"mode": "raw",
-							"raw": "{\r\n    \r\n    \"title\": \"The Terminator\",\r\n    \"production_date\": \"1983-06-19\",\r\n    \"producer\": \"Gale Anne Hurd\",\r\n    \"rating\": 9.3\r\n}",
+							"raw": "{\r\n    \r\n    \"title\": \"The Terminator\",\r\n    \"production_date\": \"1983-06-19\",\r\n    \"producer\": \"Gale Anne Hurd\",\r\n    \"rating\": 9.1\r\n}",
 							"options": {
 								"raw": {
 									"language": "json"
