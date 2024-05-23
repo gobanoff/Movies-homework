@@ -8,3 +8,11 @@
 {"id":8,"title":"Jason Bourne","production_date":"2024-06-05","producer":"Matt Damon","rating":"6.9"},
 {"id":9,"title":"Alien","production_date":"1978-06-23","producer":"Ridley Scott","rating":"9.3"},
 {"id":10,"title":"The Terminato","production_date":"1988-05-23","producer":"Gale Anne Hurd","rating":"9.1"}]
+
+ .text-center1{color: red;font-size: 22px;text-align: center;font-weight: 700;}
+      .display-1 {
+        font-weight: 700;
+      }
+      .display-2 {
+        font-weight: 700;
+      }

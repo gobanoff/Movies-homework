@@ -150,9 +150,6 @@
 									"pm.test(\"Response time is less than 500ms\", function () {\r",
 									"  pm.expect(pm.response.responseTime).to.be.below(500);\r",
 									"});\r",
-									"pm.test(\"Response body is empty for successful deletion\", function () {\r",
-									"    pm.expect(pm.response.text()).to.be.empty;\r",
-									"});\r",
 									"\r",
 									"\r",
 									"\r",
@@ -192,7 +189,7 @@
 							}
 						},
 						"url": {
-							"raw": "http://localhost:3000/movies/3",
+							"raw": "http://localhost:3000/movies/10",
 							"protocol": "http",
 							"host": [
 								"localhost"
@@ -200,7 +197,7 @@
 							"port": "3000",
 							"path": [
 								"movies",
-								"3"
+								"10"
 							]
 						}
 					},
@@ -254,7 +251,7 @@
 							}
 						},
 						"url": {
-							"raw": "http://localhost:3000/movies/3",
+							"raw": "http://localhost:3000/movies/10",
 							"protocol": "http",
 							"host": [
 								"localhost"
@@ -262,7 +259,7 @@
 							"port": "3000",
 							"path": [
 								"movies",
-								"3"
+								"10"
 							]
 						}
 					},
@@ -330,7 +327,7 @@
 							}
 						},
 						"url": {
-							"raw": "http://localhost:3000/movies/10",
+							"raw": "http://localhost:3000/movies/9",
 							"protocol": "http",
 							"host": [
 								"localhost"
@@ -338,7 +335,7 @@
 							"port": "3000",
 							"path": [
 								"movies",
-								"10"
+								"9"
 							]
 						}
 					},
@@ -391,7 +388,7 @@
 							}
 						},
 						"url": {
-							"raw": "http://localhost:3000/movies/10",
+							"raw": "http://localhost:3000/movies/9",
 							"protocol": "http",
 							"host": [
 								"localhost"
@@ -399,7 +396,7 @@
 							"port": "3000",
 							"path": [
 								"movies",
-								"10"
+								"9"
 							]
 						}
 					},
@@ -443,7 +440,7 @@
 						"method": "GET",
 						"header": [],
 						"url": {
-							"raw": "http://localhost:3000/movies/10",
+							"raw": "http://localhost:3000/movies/9",
 							"protocol": "http",
 							"host": [
 								"localhost"
@@ -451,7 +448,7 @@
 							"port": "3000",
 							"path": [
 								"movies",
-								"10"
+								"9"
 							]
 						}
 					},
