@@ -144,22 +144,34 @@
 								"exec": [
 									"\r",
 									"\r",
-									"\r",
-									"\r",
-									"\r",
-									"\r",
-									"\r",
-									"\r",
-									"\r",
-									"\r",
-									"\r",
+									"pm.test(\"Response status code is 204\", function () {\r",
+									"  pm.response.to.have.status(204);\r",
+									"});\r",
 									"pm.test(\"Response time is less than 500ms\", function () {\r",
 									"  pm.expect(pm.response.responseTime).to.be.below(500);\r",
+									"});\r",
+									"pm.test(\"Response body is empty for successful deletion\", function () {\r",
+									"    pm.expect(pm.response.text()).to.be.empty;\r",
 									"});\r",
 									"\r",
 									"\r",
 									"\r",
 									"\r",
+									"\r",
+									"\r",
+									"\r",
+									"\r",
+									"\r",
+									""
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						},
+						{
+							"listen": "prerequest",
+							"script": {
+								"exec": [
 									""
 								],
 								"type": "text/javascript",
@@ -180,7 +192,7 @@
 							}
 						},
 						"url": {
-							"raw": "http://localhost:3000/movies/12",
+							"raw": "http://localhost:3000/movies/2",
 							"protocol": "http",
 							"host": [
 								"localhost"
@@ -188,7 +200,7 @@
 							"port": "3000",
 							"path": [
 								"movies",
-								"12"
+								"2"
 							]
 						}
 					},
@@ -203,11 +215,23 @@
 								"exec": [
 									"",
 									"",
-									"",
+									"pm.test(\"Movie is deleted\", function () {",
+									"    pm.expect(pm.response.text()).to.include(\"Movie not found\");",
+									"});",
 									"",
 									"pm.test(\"Response status code is 404 after the movie is deleted by the specified ID\", function () {",
 									"    pm.response.to.have.status(404);",
 									"});"
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						},
+						{
+							"listen": "prerequest",
+							"script": {
+								"exec": [
+									""
 								],
 								"type": "text/javascript",
 								"packages": {}
@@ -230,7 +254,7 @@
 							}
 						},
 						"url": {
-							"raw": "http://localhost:3000/movies/12",
+							"raw": "http://localhost:3000/movies/2",
 							"protocol": "http",
 							"host": [
 								"localhost"
@@ -238,7 +262,7 @@
 							"port": "3000",
 							"path": [
 								"movies",
-								"12"
+								"2"
 							]
 						}
 					},
