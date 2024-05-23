@@ -18,7 +18,7 @@ let movies = [{"id":1,"title":"Dune","production_date":"2024-05-08","producer":"
 {"id":7,"title":"No Time To Die","production_date":"2024-05-28","producer":"Barbara Broccoli","rating":"8.7"},
 {"id":8,"title":"Jason Bourne","production_date":"2024-06-05","producer":"Matt Damon","rating":"6.9"},
 {"id":9,"title":"Alien","production_date":"1978-06-23","producer":"Ridley Scott","rating":"9.3"},
-{"id":10,"title":"The Terminator","production_date":"1988-05-23","producer":"Gale Anne Hurd","rating":"9.1"}];
+{"id":10,"title":"The Terminator","production_date":"1988-05-23","producer":"Gle Anne Hurd","rating":"9.1"}];
 let currentId = 11;
 
 function formatDate(date) {
