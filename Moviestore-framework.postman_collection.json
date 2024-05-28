@@ -24,13 +24,14 @@
 									"\r",
 									"pm.test(\"Response has the required fields\", function () {\r",
 									"    const responseData = pm.response.json();\r",
-									"    \r",
+									"    const requestData = JSON.parse(pm.request.body.raw);\r",
+									"\r",
 									"    pm.expect(responseData).to.be.an('object');\r",
 									"    pm.expect(responseData).to.have.property('id');\r",
-									"    pm.expect(responseData).to.have.property('title');\r",
-									"    pm.expect(responseData).to.have.property('production_date');\r",
-									"    pm.expect(responseData).to.have.property('producer');\r",
-									"    pm.expect(responseData).to.have.property('rating');\r",
+									"    pm.expect(responseData).to.have.property('title',requestData.title);\r",
+									"    pm.expect(responseData).to.have.property('production_date',requestData.production_date);\r",
+									"    pm.expect(responseData).to.have.property('producer',requestData.producer);\r",
+									"    pm.expect(responseData).to.have.property('rating',requestData.rating);\r",
 									"});\r",
 									"\r",
 									"\r",
@@ -49,7 +50,65 @@
 									"pm.test(\"Content-Type header is application/json\", function () {\r",
 									"  pm.expect(pm.response.headers.get(\"Content-Type\")).to.include(\"application/json\");\r",
 									"});\r",
-									""
+									"var responseJSON = pm.response.json();\r",
+									"\r",
+									"pm.test(\"Save properties of the request into variables\", function () {\r",
+									"    pm.variables.set(\"movieId\", responseJSON.id);\r",
+									"    pm.variables.set(\"movieTitle\", responseJSON.title);\r",
+									"    pm.variables.set(\"movieProductionDate\", responseJSON.production_date);\r",
+									"    pm.variables.set(\"movieProducer\", responseJSON.producer);\r",
+									"    pm.variables.set(\"movieRating\", responseJSON.rating);\r",
+									"});\r",
+									"var template = `\r",
+									"<style type=\"text/css\">\r",
+									"    .tftable {font-size:14px;color:#333333;width:100%;border-width: 1px;border-color: #87ceeb;border-collapse: collapse;}\r",
+									"    .tftable th {font-size:18px;background-color:#87ceeb;border-width: 1px;padding: 8px;border-style: solid;border-color: #87ceeb;text-align:left;}\r",
+									"    .tftable tr {background-color:#ffffff;}\r",
+									"    .tftable td {font-size:14px;border-width: 1px;padding: 8px;border-style: solid;border-color: #87ceeb;}\r",
+									"    .tftable tr:hover {background-color:#e0ffff;}\r",
+									"</style>\r",
+									"\r",
+									"<table class=\"tftable\" border=\"1\">\r",
+									"    <tr>\r",
+									"        <th>Variable</th>\r",
+									"        <th>Value</th>\r",
+									"    </tr>\r",
+									"    <tr>\r",
+									"        <td>Movie ID</td>\r",
+									"        <td>{{response.id}}</td>\r",
+									"    </tr>\r",
+									"    <tr>\r",
+									"        <td>Title</td>\r",
+									"        <td>{{response.title}}</td>\r",
+									"    </tr>\r",
+									"    <tr>\r",
+									"        <td>Production Date</td>\r",
+									"        <td>{{response.production_date}}</td>\r",
+									"    </tr>\r",
+									"    <tr>\r",
+									"        <td>Producer</td>\r",
+									"        <td>{{response.producer}}</td>\r",
+									"    </tr>\r",
+									"    <tr>\r",
+									"        <td>Rating</td>\r",
+									"        <td>{{response.rating}}</td>\r",
+									"    </tr>\r",
+									"</table>\r",
+									"`;\r",
+									"\r",
+									"function constructVisualizerPayload() {\r",
+									"    return {response: pm.response.json()}\r",
+									"}\r",
+									"\r",
+									"pm.visualizer.set(template, constructVisualizerPayload());\r",
+									"// Save properties of the request into variables\r",
+									"var responseJSON = pm.response.json();\r",
+									"\r",
+									"pm.environment.set(\"movieId\", responseJSON.id);\r",
+									"pm.environment.set(\"movieTitle\", responseJSON.title);\r",
+									"pm.environment.set(\"movieProductionDate\", responseJSON.production_date);\r",
+									"pm.environment.set(\"movieProducer\", responseJSON.producer);\r",
+									"pm.environment.set(\"movieRating\", responseJSON.rating);"
 								],
 								"type": "text/javascript",
 								"packages": {}
@@ -191,7 +250,7 @@
 							}
 						},
 						"url": {
-							"raw": "http://localhost:3000/movies/1",
+							"raw": "http://localhost:3000/movies/{{movieId}}",
 							"protocol": "http",
 							"host": [
 								"localhost"
@@ -199,7 +258,7 @@
 							"port": "3000",
 							"path": [
 								"movies",
-								"1"
+								"{{movieId}}"
 							]
 						}
 					},
@@ -253,7 +312,7 @@
 							}
 						},
 						"url": {
-							"raw": "http://localhost:3000/movies/1",
+							"raw": "http://localhost:3000/movies/{{movieId}}",
 							"protocol": "http",
 							"host": [
 								"localhost"
@@ -261,7 +320,7 @@
 							"port": "3000",
 							"path": [
 								"movies",
-								"1"
+								"{{movieId}}"
 							]
 						}
 					},
@@ -311,7 +370,65 @@
 									"pm.test(\"Content-Type header is application/json\", function () {\r",
 									"  pm.expect(pm.response.headers.get(\"Content-Type\")).to.include(\"application/json\");\r",
 									"});\r",
-									""
+									"var responseJSON = pm.response.json();\r",
+									"\r",
+									"pm.test(\"Save properties of the request into variables\", function () {\r",
+									"    pm.variables.set(\"movieId\", responseJSON.id);\r",
+									"    pm.variables.set(\"movieTitle\", responseJSON.title);\r",
+									"    pm.variables.set(\"movieProductionDate\", responseJSON.production_date);\r",
+									"    pm.variables.set(\"movieProducer\", responseJSON.producer);\r",
+									"    pm.variables.set(\"movieRating\", responseJSON.rating);\r",
+									"});\r",
+									"var template = `\r",
+									"<style type=\"text/css\">\r",
+									"    .tftable {font-size:14px;color:#333333;width:100%;border-width: 1px;border-color: #87ceeb;border-collapse: collapse;}\r",
+									"    .tftable th {font-size:18px;background-color:#87ceeb;border-width: 1px;padding: 8px;border-style: solid;border-color: #87ceeb;text-align:left;}\r",
+									"    .tftable tr {background-color:#ffffff;}\r",
+									"    .tftable td {font-size:14px;border-width: 1px;padding: 8px;border-style: solid;border-color: #87ceeb;}\r",
+									"    .tftable tr:hover {background-color:#e0ffff;}\r",
+									"</style>\r",
+									"\r",
+									"<table class=\"tftable\" border=\"1\">\r",
+									"    <tr>\r",
+									"        <th>Variable</th>\r",
+									"        <th>Value</th>\r",
+									"    </tr>\r",
+									"    <tr>\r",
+									"        <td>Movie ID</td>\r",
+									"        <td>{{response.id}}</td>\r",
+									"    </tr>\r",
+									"    <tr>\r",
+									"        <td>Title</td>\r",
+									"        <td>{{response.title}}</td>\r",
+									"    </tr>\r",
+									"    <tr>\r",
+									"        <td>Production Date</td>\r",
+									"        <td>{{response.production_date}}</td>\r",
+									"    </tr>\r",
+									"    <tr>\r",
+									"        <td>Producer</td>\r",
+									"        <td>{{response.producer}}</td>\r",
+									"    </tr>\r",
+									"    <tr>\r",
+									"        <td>Rating</td>\r",
+									"        <td>{{response.rating}}</td>\r",
+									"    </tr>\r",
+									"</table>\r",
+									"`;\r",
+									"\r",
+									"function constructVisualizerPayload() {\r",
+									"    return {response: pm.response.json()}\r",
+									"}\r",
+									"\r",
+									"pm.visualizer.set(template, constructVisualizerPayload());\r",
+									"// Save properties of the request into variables\r",
+									"var responseJSON = pm.response.json();\r",
+									"\r",
+									"pm.environment.set(\"movieId\", responseJSON.id);\r",
+									"pm.environment.set(\"movieTitle\", responseJSON.title);\r",
+									"pm.environment.set(\"movieProductionDate\", responseJSON.production_date);\r",
+									"pm.environment.set(\"movieProducer\", responseJSON.producer);\r",
+									"pm.environment.set(\"movieRating\", responseJSON.rating);"
 								],
 								"type": "text/javascript",
 								"packages": {}
@@ -401,7 +518,7 @@
 							}
 						},
 						"url": {
-							"raw": "http://localhost:3000/movies/2",
+							"raw": "http://localhost:3000/movies/{{movieId}}",
 							"protocol": "http",
 							"host": [
 								"localhost"
@@ -409,7 +526,7 @@
 							"port": "3000",
 							"path": [
 								"movies",
-								"2"
+								"{{movieId}}"
 							]
 						}
 					},
@@ -462,7 +579,7 @@
 							}
 						},
 						"url": {
-							"raw": "http://localhost:3000/movies/2",
+							"raw": "http://localhost:3000/movies/{{movieId}}",
 							"protocol": "http",
 							"host": [
 								"localhost"
@@ -470,7 +587,7 @@
 							"port": "3000",
 							"path": [
 								"movies",
-								"2"
+								"{{movieId}}"
 							]
 						}
 					},
@@ -514,7 +631,7 @@
 						"method": "GET",
 						"header": [],
 						"url": {
-							"raw": "http://localhost:3000/movies/2",
+							"raw": "http://localhost:3000/movies/{{movieId}}",
 							"protocol": "http",
 							"host": [
 								"localhost"
@@ -522,7 +639,7 @@
 							"port": "3000",
 							"path": [
 								"movies",
-								"2"
+								"{{movieId}}"
 							]
 						}
 					},
